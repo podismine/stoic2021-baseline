@@ -64,14 +64,14 @@ def center_crop(np_image: np.ndarray,
 
 
 def preprocess(input_image: sitk.Image,
-               new_spacing: Iterable[float] = (1.6, 1.6, 1.6),
-               new_shape: Iterable[int] = (240, 240, 240),
+               new_spacing: Iterable[float] = (3, 3, 3),
+               new_shape: Iterable[int] = (120, 120, 120),
                ) -> np.ndarray:
 
     input_image = resample(input_image, new_spacing=new_spacing)
     input_image = sitk.GetArrayFromImage(input_image)
     input_image = center_crop(input_image, new_shape=new_shape)
-    input_image = clip_and_normalize(input_image)
+    input_image = clip_and_normalize(input_image, -300, 300)
     return input_image
 
 

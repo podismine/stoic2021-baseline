@@ -161,7 +161,7 @@ class Mixed(torch.nn.Module):
 
 class I3D(torch.nn.Module):
     def __init__(self,
-                 input_channels=3,
+                 input_channels=1,
                  nr_outputs=2,
                  modality='rgb',
                  dropout_prob=0,
@@ -172,9 +172,9 @@ class I3D(torch.nn.Module):
         self.name = name
         self.input_channels = input_channels
         if modality == 'rgb':
-            in_channels = 3
+            in_channels = 1
         elif modality == 'flow':
-            in_channels = 2
+            in_channels = 1
         else:
             raise ValueError(
                 '{} not among known modalities [rgb|flow]'.format(modality))
@@ -230,7 +230,8 @@ class I3D(torch.nn.Module):
         self.mixed_5b = Mixed(832, [256, 160, 320, 32, 128, 128])
         self.mixed_5c = Mixed(832, [384, 192, 384, 48, 128, 128])
 
-        self.avg_pool = torch.nn.AvgPool3d((2, 7, 7), (1, 1, 1))
+        #self.avg_pool = torch.nn.AvgPool3d((2, 7, 7), (1, 1, 1))
+        self.avg_pool = torch.nn.AvgPool3d((2, 4, 4), (1, 1, 1))
         self.dropout = torch.nn.Dropout(dropout_prob)
 
         # set original final layer to original 400 classes
